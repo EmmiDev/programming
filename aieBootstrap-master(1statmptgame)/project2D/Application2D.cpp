@@ -22,7 +22,7 @@ bool Application2D::startup() {
 	m_Level = new Level();
 	m_Level2 = new Level2();
 	m_Level->ConnectDoor(TOP, m_Level2); //connects the rooms one way
-	m_Level2->ConnectDoor(LEFT, m_Level); // connects the rooms the other way
+	m_Level2->ConnectDoor(BOTTOM, m_Level); // connects the rooms the other way
 
 										  // detects the room your in, used so all the rooms aren't drawn all at once
 	m_currentRoom = m_Level;
@@ -70,19 +70,36 @@ void Application2D::update(float deltaTime) {
 	//calling the player
 	m_Player->update(deltaTime);
 
-	//player walks beyond top wall, taken to top room
-	if (m_Player->GetY() > 700)
+	//PLAYER walks beyond TOP wall, taken to TOP room
+	if (m_Player->GetY() > 700 && m_currentRoom->GetDoor(TOP) != nullptr) // checking the room is valid
 	{
 		m_currentRoom = m_currentRoom->GetDoor(TOP);
-		// the next room position
+		//next room PLAYER position
 		m_Player->SetY(064);
 	}
 
-	if (m_Player->GetX() > 940)
+	if (m_Player->GetX() > 940 && m_currentRoom->GetDoor(RIGHT) != nullptr)
 	{
-		m_currentRoom = m_currentRoom->GetDoor(TOP);
-		// the next room position
+		m_currentRoom = m_currentRoom->GetDoor(RIGHT);
+		//next room PLAYER position
 		m_Player->SetX(280);
+	}
+
+//_________________________________________________________________________________
+
+	// PLAYER goes beyond BOTTOM wall, taken to BOTTOM room
+	if (m_Player->GetY() < 10 && m_currentRoom->GetDoor(BOTTOM) != nullptr)
+	{
+		m_currentRoom = m_currentRoom->GetDoor(BOTTOM);
+		// next room PLAYER position
+		m_Player->SetY(650);
+	}
+
+	if (m_Player->GetX() < 200 && m_currentRoom->GetDoor(LEFT) != nullptr)
+	{
+		m_currentRoom = m_currentRoom->GetDoor(LEFT);
+		// next room PLAYER position
+		m_Player->SetX(690);
 	}
 
 	// exit the application
