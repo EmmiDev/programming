@@ -3,6 +3,8 @@
 #include "Font.h"
 #include "Input.h"
 #include "Player.h"
+#include "Level.h"
+#include "Level 2.h"
 
 Application2D::Application2D() {
 }
@@ -11,20 +13,29 @@ Application2D::~Application2D() {
 }
 
 bool Application2D::startup() {
-	
+
 	m_2dRenderer = new aie::Renderer2D();
 
 	m_texture = new aie::Texture("./textures/numbered_grid.tga");
 	m_shipTexture = new aie::Texture("./textures/ship.png");
-	m_wall1 = new aie::Texture("./textures/wall-1.png");
-	m_wall2 = new aie::Texture("./textures/wall-2.png");
-	m_wall3 = new aie::Texture("./textures/wall-3.png");
-	m_wall4 = new aie::Texture("./textures/wall-4.png");
-	m_DmFloor = new aie::Texture("./textures/clean-floor.png");
+
+	m_Level = new Level();
+	m_Level2 = new Level2();
+	m_Level->ConnectDoor(TOP, m_Level2); //connects the rooms one way
+	m_Level2->ConnectDoor(LEFT, m_Level); // connects the rooms the other way
+
+										  // detects the room your in, used so all the rooms aren't drawn all at once
+	m_currentRoom = m_Level;
+	//m_wall1 = new aie::Texture("./textures/wall-1.png");
+	//m_wall2 = new aie::Texture("./textures/wall-2.png");
+	//m_wall3 = new aie::Texture("./textures/wall-3.png");
+	//m_wall4 = new aie::Texture("./textures/wall-4.png");
+	//m_DmFloor = new aie::Texture("./textures/clean-floor.png");
+	m_Key = new aie::Texture("./textures/Key.png");
 	m_Player = new Player();
 
 	m_font = new aie::Font("./font/consolas.ttf", 32);
-	
+
 	m_cameraX = 0;
 	m_cameraY = 0;
 	m_timer = 0;
@@ -32,15 +43,18 @@ bool Application2D::startup() {
 	return true;
 }
 
-void Application2D::shutdown() 
-{	
+void Application2D::shutdown()
+{
 	delete m_font;
 	delete m_Player;
-	delete m_wall1;
-	delete m_wall2;
-	delete m_wall3;
-	delete m_wall4;
-	delete m_DmFloor;
+	delete m_Level;
+	delete m_Level2;
+	delete m_Key;
+	//delete m_wall1;
+	//delete m_wall2;
+	//delete m_wall3;
+	//delete m_wall4;
+	//delete m_DmFloor;
 	delete m_shipTexture;
 	delete m_texture;
 	delete m_2dRenderer;
@@ -52,9 +66,24 @@ void Application2D::update(float deltaTime) {
 
 	// input example
 	aie::Input* input = aie::Input::getInstance();
-	
+
 	//calling the player
 	m_Player->update(deltaTime);
+
+	//player walks beyond top wall, taken to top room
+	if (m_Player->GetY() > 700)
+	{
+		m_currentRoom = m_currentRoom->GetDoor(TOP);
+		// the next room position
+		m_Player->SetY(064);
+	}
+
+	if (m_Player->GetX() > 940)
+	{
+		m_currentRoom = m_currentRoom->GetDoor(TOP);
+		// the next room position
+		m_Player->SetX(280);
+	}
 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -66,56 +95,60 @@ void Application2D::draw() {
 	// wipe the screen to the background colour
 	clearScreen();
 
-	// set the camera position before we begin rendering
+	// set the camera position before it begins rendering
 	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
 
 	// begin drawing sprites
 	m_2dRenderer->begin();
 
 	// demonstrate animation
-	m_2dRenderer->setUVRect(int(m_timer) % 8 / 8.0f, 0, 1.f / 8, 1.f / 8);
-	m_2dRenderer->drawSprite(m_texture, 200, 200, 100, 100);
-	m_2dRenderer->setUVRect(0, 0, 1, 1);
-	
-	
+	//m_2dRenderer->setUVRect(int(m_timer) % 8 / 8.0f, 0, 1.f / 8, 1.f / 8);
+	//m_2dRenderer->drawSprite(m_texture, 200, 200, 100, 100);
+	//m_2dRenderer->setUVRect(0, 0, 1, 1);
+	//
+
 	// demonstrate spinning sprite (removed spin)
-	m_2dRenderer->drawSprite(m_shipTexture, 600, 400); /*, 0, 0, m_timer, 1);*/ 
+	//m_2dRenderer->drawSprite(m_shipTexture, 600, 400); /*, 0, 0, m_timer, 1);*/ 
 
-	// a for loop drawing wall 1
-	for (int i = 0; i < 20; i++)
-	{
-		m_2dRenderer->drawSprite(m_wall1, 300 + 32 * i, 694);
-	}
-	
-	//for loop for wall 2
-	for (int i = 0; i < 19; i++)
-	{
-		m_2dRenderer->drawSprite(m_wall2, 941, 85 + 32 * i);
-	}
+	//detcts the current room your in and draws it
+	m_currentRoom->Draw(m_2dRenderer);
 
-	// another loop but for wall 3
-	for (int i = 0; i < 20; i++)
-	{
-		m_2dRenderer->drawSprite(m_wall3, 300 + 32 * i, 064);
-	}
+	//// a for loop drawing wall 1
+	//for (int i = 0; i < 20; i++)
+	//{
+	//	m_2dRenderer->drawSprite(m_wall1, 300 + 32 * i, 694);
+	//}
+	//
+	////for loop for wall 2
+	//for (int i = 0; i < 19; i++)
+	//{
+	//	m_2dRenderer->drawSprite(m_wall2, 941, 85 + 32 * i);
+	//}
 
-	//for loop for wall 4
-	for (int i = 0; i < 19; i++)
-	{
-		m_2dRenderer->drawSprite(m_wall4, 268, 85 + 32 * i);
-	}
+	//// another loop but for wall 3
+	//for (int i = 0; i < 20; i++)
+	//{
+	//	m_2dRenderer->drawSprite(m_wall3, 300 + 32 * i, 064);
+	//}
 
-	// loop for the floor 
-	for (int j = 0; j < 19; j++)
-	{
-		for (int i = 0; i < 20; i++)
-		{
-			m_2dRenderer->drawSprite(m_DmFloor, 300 + 32 * i, 662 - 32 * j);
-		}
-	}
+	////for loop for wall 4
+	//for (int i = 0; i < 19; i++)
+	//{
+	//	m_2dRenderer->drawSprite(m_wall4, 268, 85 + 32 * i);
+	//}
+
+	//// loop for the floor 
+	//for (int j = 0; j < 19; j++)
+	//{
+	//	for (int i = 0; i < 20; i++)
+	//	{
+	//		m_2dRenderer->drawSprite(m_DmFloor, 300 + 32 * i, 662 - 32 * j);
+	//	}
+	//}
 
 	m_Player->Draw(m_2dRenderer);
 
+	m_2dRenderer->drawSprite(m_Key, 500, 500);
 	// draw a thin line
 	//m_2dRenderer->drawLine(300, 300, 600, 400, 2, 1);
 
@@ -130,7 +163,7 @@ void Application2D::draw() {
 	// draw a slightly rotated sprite with no texture, coloured yellow
 	//m_2dRenderer->setRenderColour(1, 1, 0, 1);
 	//m_2dRenderer->drawSprite(nullptr, 400, 400, 50, 50, 3.14159f * 0.25f, 1);
-	
+
 	// output some text, uses the last used colour
 	// shows frames per second and press esc to quit text
 	/*char fps[32];
@@ -138,6 +171,7 @@ void Application2D::draw() {
 	m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);*/
 	m_2dRenderer->drawText(m_font, "ESC to quit!", 0, 720 - 64);
 
+	// 60 second cou
 	int countDown = 60 - (int)m_timer;
 	char count[10];
 	sprintf_s(count, 10, "%i", countDown);

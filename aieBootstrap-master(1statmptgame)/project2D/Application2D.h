@@ -3,7 +3,7 @@
 #include "Renderer2D.h"
 
 class Player;
-
+class roomBase;
 class Application2D : public aie::Application {
 public:
 
@@ -22,11 +22,14 @@ protected:
 	aie::Texture*		m_texture;
 	aie::Texture*		m_shipTexture;
 	aie::Font*			m_font;
-	aie::Texture*		m_wall1;
-	aie::Texture*		m_wall2;
-	aie::Texture*		m_wall3;
-	aie::Texture*		m_wall4;
+
+	roomBase*			m_Level;
+	roomBase*			m_Level2;
+
+	roomBase*			m_currentRoom;
+
 	aie::Texture*		m_DmFloor;
+	aie::Texture*		m_Key;
 	Player*				m_Player;
 
 	float m_cameraX, m_cameraY;

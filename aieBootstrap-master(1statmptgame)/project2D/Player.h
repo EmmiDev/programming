@@ -10,6 +10,12 @@ public:
 	Player();
 	~Player();
 
+	float GetX();
+	void SetX(float newX);
+
+	float GetY();
+	void SetY(float newY);
+
 	void Draw(aie::Renderer2D* Renderer2D);
 	void update(float deltaTime);
 

@@ -163,11 +163,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application2D.cpp" />
+    <ClCompile Include="Room Base.cpp" />
+    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="Level 2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application2D.h" />
+    <ClInclude Include="Room Base.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="Level 2.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
