@@ -23,6 +23,7 @@ bool Application2D::startup() {
 	m_Level2 = new Level2();
 	m_Level->ConnectDoor(TOP, m_Level2); //connects the rooms one way
 	m_Level2->ConnectDoor(BOTTOM, m_Level); // connects the rooms the other way
+	m_Level->ConnectDoor();
 
 										  // detects the room your in, used so all the rooms aren't drawn all at once
 	m_currentRoom = m_Level;
