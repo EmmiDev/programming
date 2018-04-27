@@ -118,10 +118,14 @@ void Application2D::update(float deltaTime) {
 		// next room PLAYER position
 		m_Player->SetX(690);
 	}
+	//_____________________________________________________________________________
+
 
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
+
+
 }
 
 void Application2D::draw() {
