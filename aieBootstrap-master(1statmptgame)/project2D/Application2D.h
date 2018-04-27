@@ -25,6 +25,9 @@ protected:
 
 	roomBase*			m_Level;
 	roomBase*			m_Level2;
+	roomBase*			m_Level3;
+	roomBase*			m_Level4;
+	roomBase*			m_Level5;
 
 	roomBase*			m_currentRoom;
 

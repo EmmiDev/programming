@@ -5,6 +5,9 @@
 #include "Player.h"
 #include "Level.h"
 #include "Level 2.h"
+#include "Level 3.h"
+#include "Level 4.h"
+#include "Level 5.h"
 
 Application2D::Application2D() {
 }
@@ -21,11 +24,24 @@ bool Application2D::startup() {
 
 	m_Level = new Level();
 	m_Level2 = new Level2();
+	m_Level3 = new Level3();
+	m_Level4 = new Level4();
+	m_Level5 = new Level5();
+
 	m_Level->ConnectDoor(TOP, m_Level2); //connects the rooms one way
 	m_Level2->ConnectDoor(BOTTOM, m_Level); // connects the rooms the other way
-	m_Level->ConnectDoor();
 
-										  // detects the room your in, used so all the rooms aren't drawn all at once
+	m_Level->ConnectDoor(RIGHT, m_Level3);
+	m_Level3->ConnectDoor(LEFT, m_Level);
+
+	m_Level->ConnectDoor(BOTTOM, m_Level4);
+	m_Level4->ConnectDoor(TOP, m_Level);
+
+	m_Level->ConnectDoor(LEFT, m_Level5);
+	m_Level5->ConnectDoor(RIGHT, m_Level);
+
+
+ // detects the room your in, used so all the rooms aren't drawn all at once
 	m_currentRoom = m_Level;
 	//m_wall1 = new aie::Texture("./textures/wall-1.png");
 	//m_wall2 = new aie::Texture("./textures/wall-2.png");
@@ -171,12 +187,12 @@ void Application2D::draw() {
 	//m_2dRenderer->drawLine(300, 300, 600, 400, 2, 1);
 
 	// draw a moving purple circle
-	m_2dRenderer->setRenderColour(1, 1, 0, 1);
-	m_2dRenderer->drawCircle(sin(m_timer) * 100 + 600, 150, 50);
+	/*m_2dRenderer->setRenderColour(1, 1, 0, 1);
+	m_2dRenderer->drawCircle(sin(m_timer) * 100 + 600, 150, 50);*/
 
 	// draw a rotating red box
-	m_2dRenderer->setRenderColour(1, 0, 0, 1);
-	m_2dRenderer->drawBox(600, 500, 60, 20, m_timer);
+	//m_2dRenderer->setRenderColour(1, 0, 0, 1);
+	//m_2dRenderer->drawBox(600, 500, 60, 20, m_timer);
 
 	// draw a slightly rotated sprite with no texture, coloured yellow
 	//m_2dRenderer->setRenderColour(1, 1, 0, 1);
@@ -187,9 +203,9 @@ void Application2D::draw() {
 	/*char fps[32];
 	sprintf_s(fps, 32, "FPS: %i", getFPS());
 	m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);*/
-	m_2dRenderer->drawText(m_font, "ESC to quit!", 0, 720 - 64);
+	//m_2dRenderer->drawText(m_font, "ESC to quit!", 0, 720 - 64);
 
-	// 60 second cou
+	// 60 second countdown
 	int countDown = 60 - (int)m_timer;
 	char count[10];
 	sprintf_s(count, 10, "%i", countDown);

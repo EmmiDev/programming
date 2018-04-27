@@ -165,6 +165,7 @@
     <ClCompile Include="Application2D.cpp" />
     <ClCompile Include="Level 3.cpp" />
     <ClCompile Include="Level 4.cpp" />
+    <ClCompile Include="Level 5.cpp" />
     <ClCompile Include="Room Base.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Level 2.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="Application2D.h" />
     <ClInclude Include="Level 3.h" />
     <ClInclude Include="Level 4.h" />
+    <ClInclude Include="Level 5.h" />
     <ClInclude Include="Room Base.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Level 2.h" />

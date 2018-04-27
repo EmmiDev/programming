@@ -39,6 +39,9 @@
     <ClCompile Include="Level 4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Level 5.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application2D.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Level 4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Level 5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
