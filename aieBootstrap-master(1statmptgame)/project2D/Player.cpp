@@ -50,12 +50,12 @@ void Player::update(float deltaTime)
 	aie::Input* input = aie::Input::getInstance();
 
 	//arrow keys to move the player
-	if (input->isKeyDown(aie::INPUT_KEY_UP))
+	if (input->isKeyDown(aie::INPUT_KEY_W))
 		y += 170.0f * deltaTime;
-	if (input->isKeyDown(aie::INPUT_KEY_DOWN))
+	if (input->isKeyDown(aie::INPUT_KEY_S))
 		y -= 170.0f * deltaTime;
-	if (input->isKeyDown(aie::INPUT_KEY_LEFT))
+	if (input->isKeyDown(aie::INPUT_KEY_A))
 		x -= 170.0f * deltaTime;
-	if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
+	if (input->isKeyDown(aie::INPUT_KEY_D))
 		x += 170.0f * deltaTime;
 }
