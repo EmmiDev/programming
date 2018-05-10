@@ -2,13 +2,14 @@
 #include "Renderer2D.h"
 #include "Application2D.h"
 #include "Input.h"
-
+#include <assert.h>
 
 Player::Player()
 {
 	m_Player = new aie::Texture("./Textures/Amber-1.png");
 	x = 300;
 	y = 300;
+	assert(m_Player);
 }
 
 Player::~Player()

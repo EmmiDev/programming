@@ -8,6 +8,7 @@
 #include "Level 3.h"
 #include "Level 4.h"
 #include "Level 5.h"
+#include <assert.h>
 
 Application2D::Application2D() {
 }
@@ -27,6 +28,12 @@ bool Application2D::startup() {
 	m_Level3 = new Level3();
 	m_Level4 = new Level4();
 	m_Level5 = new Level5();
+
+	assert(m_Level);
+	assert(m_Level2);
+	assert(m_Level3);
+	assert(m_Level4);
+	assert(m_Level5);
 
 	m_Level->ConnectDoor(TOP, m_Level2); //connects the rooms one way
 	m_Level2->ConnectDoor(BOTTOM, m_Level); // connects the rooms the other way
@@ -90,6 +97,8 @@ void Application2D::update(float deltaTime) {
 	//PLAYER walks beyond TOP wall, taken to TOP room
 	if (m_Player->GetY() > 700 && m_currentRoom->GetDoor(TOP) != nullptr) // checking the room is valid
 	{
+		assert(m_Level);
+		assert(m_Level2);
 		m_currentRoom = m_currentRoom->GetDoor(TOP);
 		//next room PLAYER position
 		m_Player->SetY(064);
@@ -97,6 +106,8 @@ void Application2D::update(float deltaTime) {
 
 	if (m_Player->GetX() > 940 && m_currentRoom->GetDoor(RIGHT) != nullptr)
 	{
+		assert(m_Level);
+		assert(m_Level3);
 		m_currentRoom = m_currentRoom->GetDoor(RIGHT);
 		//next room PLAYER position
 		m_Player->SetX(280);
@@ -107,6 +118,8 @@ void Application2D::update(float deltaTime) {
 	// PLAYER goes beyond BOTTOM wall, taken to BOTTOM room
 	if (m_Player->GetY() < 10 && m_currentRoom->GetDoor(BOTTOM) != nullptr)
 	{
+		assert(m_Level);
+		assert(m_Level4);
 		m_currentRoom = m_currentRoom->GetDoor(BOTTOM);
 		// next room PLAYER position
 		m_Player->SetY(650);
@@ -114,6 +127,8 @@ void Application2D::update(float deltaTime) {
 
 	if (m_Player->GetX() < 200 && m_currentRoom->GetDoor(LEFT) != nullptr)
 	{
+		assert(m_Level);
+		assert(m_Level5);
 		m_currentRoom = m_currentRoom->GetDoor(LEFT);
 		// next room PLAYER position
 		m_Player->SetX(690);
@@ -124,8 +139,6 @@ void Application2D::update(float deltaTime) {
 	// exit the application
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
-
-
 }
 
 void Application2D::draw() {
@@ -133,81 +146,25 @@ void Application2D::draw() {
 	// wipe the screen to the background colour
 	clearScreen();
 
+	assert(m_2dRenderer);
+	assert(m_Player);
+	assert(m_currentRoom);
+
 	// set the camera position before it begins rendering
 	m_2dRenderer->setCameraPos(m_cameraX, m_cameraY);
 
 	// begin drawing sprites
 	m_2dRenderer->begin();
 
-	// demonstrate animation
-	//m_2dRenderer->setUVRect(int(m_timer) % 8 / 8.0f, 0, 1.f / 8, 1.f / 8);
-	//m_2dRenderer->drawSprite(m_texture, 200, 200, 100, 100);
-	//m_2dRenderer->setUVRect(0, 0, 1, 1);
-	//
-
-	// demonstrate spinning sprite (removed spin)
-	//m_2dRenderer->drawSprite(m_shipTexture, 600, 400); /*, 0, 0, m_timer, 1);*/ 
-
 	//detcts the current room your in and draws it
 	m_currentRoom->Draw(m_2dRenderer);
 
-	//// a for loop drawing wall 1
-	//for (int i = 0; i < 20; i++)
-	//{
-	//	m_2dRenderer->drawSprite(m_wall1, 300 + 32 * i, 694);
-	//}
-	//
-	////for loop for wall 2
-	//for (int i = 0; i < 19; i++)
-	//{
-	//	m_2dRenderer->drawSprite(m_wall2, 941, 85 + 32 * i);
-	//}
-
-	//// another loop but for wall 3
-	//for (int i = 0; i < 20; i++)
-	//{
-	//	m_2dRenderer->drawSprite(m_wall3, 300 + 32 * i, 064);
-	//}
-
-	////for loop for wall 4
-	//for (int i = 0; i < 19; i++)
-	//{
-	//	m_2dRenderer->drawSprite(m_wall4, 268, 85 + 32 * i);
-	//}
-
-	//// loop for the floor 
-	//for (int j = 0; j < 19; j++)
-	//{
-	//	for (int i = 0; i < 20; i++)
-	//	{
-	//		m_2dRenderer->drawSprite(m_DmFloor, 300 + 32 * i, 662 - 32 * j);
-	//	}
-	//}
 
 	m_Player->Draw(m_2dRenderer);
 
 	m_2dRenderer->drawSprite(m_Key, 500, 500);
 	// draw a thin line
 	//m_2dRenderer->drawLine(300, 300, 600, 400, 2, 1);
-
-	// draw a moving purple circle
-	/*m_2dRenderer->setRenderColour(1, 1, 0, 1);
-	m_2dRenderer->drawCircle(sin(m_timer) * 100 + 600, 150, 50);*/
-
-	// draw a rotating red box
-	//m_2dRenderer->setRenderColour(1, 0, 0, 1);
-	//m_2dRenderer->drawBox(600, 500, 60, 20, m_timer);
-
-	// draw a slightly rotated sprite with no texture, coloured yellow
-	//m_2dRenderer->setRenderColour(1, 1, 0, 1);
-	//m_2dRenderer->drawSprite(nullptr, 400, 400, 50, 50, 3.14159f * 0.25f, 1);
-
-	// output some text, uses the last used colour
-	// shows frames per second and press esc to quit text
-	/*char fps[32];
-	sprintf_s(fps, 32, "FPS: %i", getFPS());
-	m_2dRenderer->drawText(m_font, fps, 0, 720 - 32);*/
-	//m_2dRenderer->drawText(m_font, "ESC to quit!", 0, 720 - 64);
 
 	// 60 second countdown
 	int countDown = 60 - (int)m_timer;
